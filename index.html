@@ -8,7 +8,7 @@
   :root{--bg:#0f172a; --card:#0b1220; --text:#e5e7eb; --muted:#94a3b8; --primary:#3b82f6; --accent:#22c55e; --accent-weak:#16a34a; --danger:#ef4444;}
   html,body{height:100%}
   body{margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial; background:radial-gradient(1200px 600px at 10% -10%, #0b1220, #0f172a); color:var(--text); display:flex; align-items:center; justify-content:center; padding:24px}
-  .app{width:min(1000px,100%); background:rgba(11,18,32,.92); border:1px solid rgba(255,255,255,.06); border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,.5); overflow:hidden}
+  .app{width:min(1000px,100%); background:rgba(11,18,32,.92); border:1px solid rgba(255,255,255,.06); border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,.5); overflow:hidden; z-index: 10;}
   header{padding:18px 22px; border-bottom:1px solid rgba(255,255,255,.08); display:flex; gap:12px; align-items:center}
   header .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center; background: radial-gradient(100% 100% at 10% 0%, var(--primary), #06b6d4); font-weight:700}
   header h1{margin:0; font-size:18px}
@@ -39,26 +39,35 @@
   th{color:#c7d2fe}
 </style>
 
-<style id="ua-flag-wallpaper-removed">
-/* Ukrainian flag wallpaper override */
+<style id="ua-flag-wallpaper-text">
+/* Ukrainian flag background */
 body{
   background-color:#0057B7 !important;
-  background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%222400%22%20height%3D%221600%22%20viewBox%3D%220%200%202400%201600%22%3E%0A%20%20%3Crect%20width%3D%222400%22%20height%3D%22800%22%20y%3D%220%22%20fill%3D%22%230057B7%22/%3E%0A%20%20%3Crect%20width%3D%222400%22%20height%3D%22800%22%20y%3D%22800%22%20fill%3D%22%23FFD700%22/%3E%0A%3C/svg%3E') !important;
+  /* Оновлений SVG, тепер містить лише прапор без тексту */
+  background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%222400%22%20height%3D%221600%22%20viewBox%3D%220%200%202400%201600%22%3E%3Crect%20width%3D%222400%22%20height%3D%22800%22%20y%3D%220%22%20fill%3D%22%230057B7%22/%3E%3Crect%20width%3D%222400%22%20height%3D%22800%22%20y%3D%22800%22%20fill%3D%22%23FFD700%22/%3E%3C/svg%3E') !important;
   background-size: cover !important;
-  background-attachment: fixed !important;
+  background-attachment: fixed !importan
+  t;
   background-position: center center !important;
 }
-</style>
 
-
-<style id="ua-flag-wallpaper-text">
-/* Ukrainian flag with bottom text */
-body{
-  background-color:#0057B7 !important;
-  background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%222400%22%20height%3D%221600%22%20viewBox%3D%220%200%202400%201600%22%3E%0A%20%20%3Crect%20width%3D%222400%22%20height%3D%22800%22%20y%3D%220%22%20fill%3D%22%230057B7%22/%3E%0A%20%20%3Crect%20width%3D%222400%22%20height%3D%22800%22%20y%3D%22800%22%20fill%3D%22%23FFD700%22/%3E%0A%20%20%3Ctext%20x%3D%2250%25%22%20y%3D%221500%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2264%22%20fill%3D%22white%22%20text-anchor%3D%22middle%22%20font-weight%3D%22bold%22%3E%0A%20%20%20%20%D1%83%D0%BF%D0%BE%D0%B2%D0%BD%D0%BE%D0%B2%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D0%B9%20%D0%BF%D1%96%D0%B4%D1%80%D0%BE%D0%B7%D0%B4%D1%96%D0%BB%20%D0%B7%20%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%D1%8C%20%D0%B7%D0%B0%D0%BF%D0%BE%D0%B1%D1%96%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%20%D1%82%D0%B0%20%D0%B2%D0%B8%D1%8F%D0%B2%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F%20%D0%BA%D0%BE%D1%80%D1%83%D0%BF%D1%86%D1%96%D1%97%0A%20%20%3C/text%3E%0A%20%20%3Ctext%20x%3D%2250%25%22%20y%3D%221570%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2264%22%20fill%3D%22white%22%20text-anchor%3D%22middle%22%20font-weight%3D%22bold%22%3E%0A%20%20%20%20%D0%9D%D0%B0%D1%86%D1%96%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D1%97%20%D0%BF%D0%BE%D0%BB%D1%96%D1%86%D1%96%D1%97%20%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B8%0A%20%20%3C/text%3E%0A%3C/svg%3E') !important;
-  background-size: cover !important;
-  background-attachment: fixed !important;
-  background-position: center center !important;
+/* Нові стилі для адаптивного тексту внизу екрана */
+.footer-text {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    /* Адаптивний розмір шрифту, що залежить від ширини екрана */
+    font-size: clamp(0.8rem, 2.2vw, 1.5rem);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    pointer-events: none; /* Дозволяє клікати "крізь" текст */
+    line-height: 1.4;
+    padding: 0 10px;
+    box-sizing: border-box;
+    z-index: 0;
 }
 </style>
 
@@ -75,6 +84,12 @@ body{
     <main>
       <div id="screen"></div>
     </main>
+  </div>
+
+  <!-- Новий HTML-елемент для тексту -->
+  <div class="footer-text">
+    уповноважений підрозділ з питань запобігання та виявлення корупції<br>
+    Національної поліції України
   </div>
 
 <script>
@@ -375,4 +390,3 @@ startScreen();
 </script>
 </body>
 </html>
-
