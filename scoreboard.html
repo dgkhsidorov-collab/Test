@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Рейтинг — Антикорупційний тренажер</title>
+<style>
+  body{margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial; background:#0b1220; color:#e5e7eb}
+  header{display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg,#0f172a,#0b1220)}
+  .muted{color:#94a3b8}
+  main{padding:16px; max-width:1200px; margin:0 auto}
+  input{background:#0b1324; color:#e5e7eb; border:1px solid rgba(255,255,255,.12); padding:10px 12px; border-radius:12px}
+  button{appearance:none; border:none; padding:10px 12px; border-radius:12px; background:#1d4ed8; color:white; cursor:pointer}
+  table{width:100%; border-collapse:collapse; margin-top:10px}
+  th, td{border-bottom:1px solid rgba(255,255,255,.06); padding:12px 10px; text-align:left; font-size:16px}
+  th{color:#c7d2fe}
+  h1{font-size:18px; margin:0}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏆 Рейтинг — Антикорупційний тренажер</h1>
+  <div class="muted" id="srvInfo">Backend: (не задано)</div>
+</header>
+<main>
+  <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+    <input id="server" placeholder="SERVER_URL (exec)" style="min-width:320px" />
+    <input id="session" placeholder="Код сесії" value="session1" />
+    <button onclick="saveAndRefresh()">Застосувати</button>
+  </div>
+  <div id="board"></div>
+</main>
+<script>
+const LS_KEY = "acq_server_url";
+const $ = s => document.querySelector(s);
+function getServerUrl(){ return localStorage.getItem(LS_KEY) || ""; }
+function setServerUrl(u){ localStorage.setItem(LS_KEY, u||""); }
+async function getLeaderboard(server, session){
+  if (!server) return {ok:false, disabled:true, rows:[]};
+  try{
+    const res = await fetch(server + "?session=" + encodeURIComponent(session||'default'));
+    return await res.json();
+  }catch(e){ return {ok:false, error:String(e), rows:[]};}
+}
+async function refresh(){
+  const server = $("#server").value.trim() || getServerUrl();
+  const session = $("#session").value.trim() || "session1";
+  $("#srvInfo").textContent = "Backend: " + (server || "(не задано)");
+  if (!server){ $("#board").innerHTML = '<div class="muted">Вкажіть SERVER_URL.</div>'; return; }
+  const res = await getLeaderboard(server, session);
+  if (!res.ok){ $("#board").innerHTML = '<div class="muted">Немає підключення до бекенду або помилка доступу.</div>'; return; }
+  const rows = res.rows || [];
+  let html = `<table><thead><tr><th>#</th><th>Ім'я</th><th>Бал</th><th>З питань</th><th>%</th><th>⏱</th><th>Час</th></tr></thead><tbody>`;
+  rows.forEach((r,i)=>{
+    html += `<tr>
+      <td>${i+1}</td>
+      <td>${r.name||''}</td>
+      <td>${r.score}</td>
+      <td>${r.total}</td>
+      <td>${Math.round(r.percent)}%</td>
+      <td>${r.timePerQuestion}s</td>
+      <td>${(r.timestamp||'').toString().replace('T',' ').replace('Z','')}</td>
+    </tr>`;
+  });
+  html += `</tbody></table>`;
+  $("#board").innerHTML = html;
+  setTimeout(refresh, 5000);
+}
+function saveAndRefresh(){
+  const v = $("#server").value.trim();
+  if (v) setServerUrl(v);
+  refresh();
+}
+(function init(){
+  const url = new URL(location.href);
+  const server = url.searchParams.get("server");
+  const session = url.searchParams.get("session");
+  if (server){ $("#server").value = server; setServerUrl(server); }
+  else { $("#server").value = getServerUrl(); }
+  if (session){ $("#session").value = session; }
+  refresh();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Антикорупційний тренажер — повний комплект</title>
+<style>
+  :root{--bg:#0f172a; --card:#0b1220; --text:#e5e7eb; --muted:#94a3b8; --primary:#3b82f6; --accent:#22c55e; --accent-weak:#16a34a; --danger:#ef4444;}
+  html,body{height:100%}
+  body{margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial; background:radial-gradient(1200px 600px at 10% -10%, #0b1220, #0f172a); color:var(--text); display:flex; align-items:center; justify-content:center; padding:24px}
+  .app{width:min(1000px,100%); background:rgba(11,18,32,.92); border:1px solid rgba(255,255,255,.06); border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,.5); overflow:hidden}
+  header{padding:18px 22px; border-bottom:1px solid rgba(255,255,255,.08); display:flex; gap:12px; align-items:center}
+  header .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center; background: radial-gradient(100% 100% at 10% 0%, var(--primary), #06b6d4); font-weight:700}
+  header h1{margin:0; font-size:18px}
+  header p{margin:0; color:var(--muted); font-size:13px}
+  main{padding:22px}
+  .card{background: rgba(2,6,23,.6); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:18px}
+  .row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+  .muted{color:var(--muted)}
+  .case{white-space:pre-wrap; line-height:1.5; color:#dbeafe; background:rgba(59,130,246,.08); border:1px solid rgba(59,130,246,.2); padding:12px; border-radius:12px;}
+  .question{font-size:18px; margin:14px 0 10px; font-weight:700}
+  .answers{display:grid; gap:10px; margin:12px 0;}
+  .btn{appearance:none; border:none; cursor:pointer; padding:10px 12px; border-radius:12px; background:#0b1324; color:var(--text); border:1px solid rgba(255,255,255,.08); text-align:left; transition:.15s ease}
+  .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.2)}
+  .btn.primary{background: linear-gradient(180deg, var(--primary), #2563eb); text-align:center; font-weight:700}
+  .btn.block{width:100%}
+  .btn.correct{background:linear-gradient(180deg, var(--accent), var(--accent-weak)); border-color:transparent; color:#04120a}
+  .btn.wrong{background:linear-gradient(180deg, var(--danger), #b91c1c); border-color:transparent; color:#140404}
+  .chip{font-size:12px; color:var(--muted); background:rgba(148,163,184,.12); border:1px solid rgba(148,163,184,.25); padding:6px 10px; border-radius:999px}
+  .progress{height:8px; width:100%; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden}
+  .progress > div{height:100%; width:0; background:linear-gradient(90deg, #38bdf8, #6366f1); transition: width .25s ease}
+  .timebar{height:10px; width:100%; background:rgba(255,255,255,.08); border-radius:999px; overflow:hidden; border:1px solid rgba(255,255,255,.08)}
+  .timebar > div{height:100%; width:100%; background:linear-gradient(90deg, #22c55e, #f59e0b, #ef4444); transition: width 1s linear}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  @media (max-width: 760px){ .grid2{grid-template-columns:1fr} }
+  input, select{background:#0b1324; color:var(--text); border:1px solid rgba(255,255,255,.12); padding:10px 12px; border-radius:12px}
+  table{width:100%; border-collapse:collapse; margin-top:10px}
+  th, td{border-bottom:1px solid rgba(255,255,255,.06); padding:10px 8px; text-align:left; font-size:14px}
+  th{color:#c7d2fe}
+  .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.5); padding:20px}
+  .modal .inner{background:#0b1324; border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:18px; width:min(520px,100%)}
+</style>
+
+<style id="ua-flag-wallpaper-removed">
+/* Ukrainian flag wallpaper override */
+body{
+  background-color:#0057B7 !important;
+  background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%222400%22%20height%3D%221600%22%20viewBox%3D%220%200%202400%201600%22%3E%0A%20%20%3Crect%20width%3D%222400%22%20height%3D%22800%22%20y%3D%220%22%20fill%3D%22%230057B7%22/%3E%0A%20%20%3Crect%20width%3D%222400%22%20height%3D%22800%22%20y%3D%22800%22%20fill%3D%22%23FFD700%22/%3E%0A%3C/svg%3E') !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  background-position: center center !important;
+}
+</style>
+
+
+<style id="ua-flag-wallpaper-text">
+/* Ukrainian flag with bottom text */
+body{
+  background-color:#0057B7 !important;
+  background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%222400%22%20height%3D%221600%22%20viewBox%3D%220%200%202400%201600%22%3E%0A%20%20%3Crect%20width%3D%222400%22%20height%3D%22800%22%20y%3D%220%22%20fill%3D%22%230057B7%22/%3E%0A%20%20%3Crect%20width%3D%222400%22%20height%3D%22800%22%20y%3D%22800%22%20fill%3D%22%23FFD700%22/%3E%0A%20%20%3Ctext%20x%3D%2250%25%22%20y%3D%221500%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2264%22%20fill%3D%22white%22%20text-anchor%3D%22middle%22%20font-weight%3D%22bold%22%3E%0A%20%20%20%20%D1%83%D0%BF%D0%BE%D0%B2%D0%BD%D0%BE%D0%B2%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D0%B9%20%D0%BF%D1%96%D0%B4%D1%80%D0%BE%D0%B7%D0%B4%D1%96%D0%BB%20%D0%B7%20%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%D1%8C%20%D0%B7%D0%B0%D0%BF%D0%BE%D0%B1%D1%96%D0%B3%D0%B0%D0%BD%D0%BD%D1%8F%20%D1%82%D0%B0%20%D0%B2%D0%B8%D1%8F%D0%B2%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F%20%D0%BA%D0%BE%D1%80%D1%83%D0%BF%D1%86%D1%96%D1%97%0A%20%20%3C/text%3E%0A%20%20%3Ctext%20x%3D%2250%25%22%20y%3D%221570%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2264%22%20fill%3D%22white%22%20text-anchor%3D%22middle%22%20font-weight%3D%22bold%22%3E%0A%20%20%20%20%D0%9D%D0%B0%D1%86%D1%96%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D1%97%20%D0%BF%D0%BE%D0%BB%D1%96%D1%86%D1%96%D1%97%20%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B8%0A%20%20%3C/text%3E%0A%3C/svg%3E') !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  background-position: center center !important;
+}
+</style>
+
+</head>
+<body>
+  <div class="app" id="app">
+    <header>
+      <div class="logo">AC</div>
+      <div>
+        <h1>Антикорупційний тренажер — повний комплект</h1>
+        <p class="muted">Мультикористувацький • Таймер • Рейтинг (Google Sheets)</p>
+      </div>
+    </header>
+    <main>
+      <div id="screen"></div>
+    </main>
+  </div>
+
+  <div class="modal" id="setupModal">
+    <div class="inner">
+      <h3 style="margin-top:0">Налаштування бекенду</h3>
+      <p class="muted">Вставте URL Web App з Google Apps Script (закінчується на <code>/exec</code>), щоб зберігати результати у спільній таблиці.</p>
+      <input id="srvUrl" placeholder="https://script.google.com/macros/s/.../exec" style="width:100%; margin:10px 0" />
+      <div class="row" style="justify-content:flex-end">
+        <button class="btn" onclick="closeSetup()">Скасувати</button>
+        <button class="btn primary" onclick="saveSetup()">Зберегти</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ======= Дані завдань =======
+const DATA = [{"case": "Через Єдиний портал повідомлень викривачів надійшло повідомлення: під час тендеру уповноважена особа визнала переможцем близьку їй особу.", "q": "Які перші дії має вчинити уповноважений користувач у Порталі?", "a": ["Передати повідомлення без розгляду", "Зареєструвати, перевірити підвідомчість, забезпечити неупереджений розгляд", "Звернутися безпосередньо до підозрюваної особи", "Відкласти розгляд до «зручного часу»"], "correct": 1, "explain": "Повідомлення викривача реєструється та розглядається за процедурою; забезпечується неупереджений розгляд."}, {"case": "Ч/з Портал: начальник ГУНП діяв у реальному конфлікті інтересів та вніс недостовірні відомості в декларацію. Отримувач — керівник уповноваженого підрозділу, який йому підпорядковується.", "q": "Що має зробити керівник уповноваженого підрозділу?", "a": ["Замовчати інформацію", "Негайно повідомити НАЗК та передати розгляд іншому органу", "Особисто перевіряти факти щодо свого начальника", "Відмовитися від розгляду без пояснень"], "correct": 1, "explain": "За наявності підпорядкування існує конфлікт інтересів — необхідна передача та інформування НАЗК."}, {"case": "Анонімний поліцейський через Портал: керівник вчинив кримінальне корупційне правопорушення. Обставин не наведено.", "q": "Які дії керівника організації?", "a": ["Відхилити повідомлення як бездоказове", "Зареєструвати повідомлення, надати статус, провести первинну перевірку", "Призначити службове розслідування без даних", "Звернутися до заявника з вимогою «підтвердити»"], "correct": 1, "explain": "Анонімні повідомлення підлягають розгляду; за відсутності фактів рішення приймається за результатами первинної перевірки."}, {"case": "Повідомлення: керівник уповноваженого підрозділу вчинив корупційне правопорушення. Воно потрапило в його ж особистий кабінет у Порталі.", "q": "Що має зробити керівник уповноваженого підрозділу?", "a": ["Розглянути своє повідомлення самостійно", "Передати повідомлення іншому уповноваженому органу, письмово заявивши про конфлікт інтересів", "Видалити повідомлення", "Повідомити колег та «вирішити внутрішньо»"], "correct": 1, "explain": "Саморозгляд неможливий: наявний реальний конфлікт інтересів — потрібна передача компетентному органу."}, {"case": "До начальника ДСР НПУ: працівник ОМС повідомляє про адмінкорупційне правопорушення колег (глава 13-А КУпАП). Дані наведені повністю.", "q": "Які дії начальника?", "a": ["Зареєструвати та передати матеріали до органу, уповноваженого розглядати", "Самостійно накласти штраф", "Залишити без реагування", "Внести інформацію у службову характеристику колег"], "correct": 0, "explain": "Адмінсправи за гл. 13-А КУпАП розглядають уповноважені органи (суди, НАЗК тощо)."}, {"case": "Поштове повідомлення: працівник уповноваженого підрозділу порушив Закон «Про запобігання корупції» (дисциплінарне стягнення).", "q": "Які дії керівника органу?", "a": ["Зареєструвати повідомлення, призначити службову перевірку, у разі підтвердження — застосувати дисциплінарне стягнення", "Залишити лист «без руху»", "Автоматично звільнити працівника", "Передати повідомлення самому порушнику для розгляду"], "correct": 0, "explain": "Дисциплінарна відповідальність потребує службового розслідування та належної процедури."}, {"case": "До територіального управління ДВБ: громадянин Т заявляє, що поліцейські вимагають 3000 дол. США за визнання потерпілим у кримінальному провадженні.", "q": "Які дії керівника органу поліції?", "a": ["Зареєструвати повідомлення, забезпечити документування, повідомити прокуратуру та орган досудового розслідування", "«Вирішити на місці» з підозрюваними", "Відкласти перевірку", "Порадити громадянину самому звернутися до суду"], "correct": 0, "explain": "Ознаки кримінального корупційного правопорушення — негайні процесуальні дії та інформування слідства/прокуратури."}];
+
+// ======= Параметри/утиліти =======
+const $ = s => document.querySelector(s);
+const screen = $("#screen");
+const LS_KEY = "acq_server_url";
+
+function shuffle(arr){ const a = arr.slice(); for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function getServerUrl(){ return localStorage.getItem(LS_KEY) || ""; }
+function setServerUrl(u){ localStorage.setItem(LS_KEY, u||""); }
+
+async function postResult(payload){
+  const SERVER_URL = getServerUrl();
+  if (!SERVER_URL) return {ok:false, disabled:true};
+  try{
+    const res = await fetch(SERVER_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    return await res.json();
+  }catch(e){ return {ok:false, error:String(e)}}
+}
+
+async function getLeaderboard(session){
+  const SERVER_URL = getServerUrl();
+  if (!SERVER_URL) return {ok:false, disabled:true, rows:[]};
+  try{
+    const res = await fetch(SERVER_URL + "?session=" + encodeURIComponent(session||'default'));
+    return await res.json();
+  }catch(e){ return {ok:false, error:String(e), rows:[]};}
+}
+
+// ======= Стан =======
+let order = [];
+let idx = 0;
+let answersOrder = [];
+let score = 0;
+let timePerQuestion = 30;
+let remaining = 0;
+let timerId = null;
+let playerName = "";
+let sessionCode = "session1";
+
+function startScreen(){
+  screen.innerHTML = `
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <h2 style="margin:0 0 8px 0">Почнімо тренування</h2>
+          <div class="muted">Введіть ім'я та код сесії. Для збереження результатів натисніть «Налаштувати бекенд» і вставте URL.</div>
+        </div>
+        <div class="row">
+          <button class="btn" onclick="openSetup()">Налаштувати бекенд</button>
+          <button class="btn" onclick="leaderboardScreen()">🏆 Рейтинг</button>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin:12px 0">
+        <div class="row" style="gap:8px">
+          <input id="name" placeholder="Ім'я учасника" />
+          <input id="sess" placeholder="Код сесії (напр. session1)" value="session1" />
+        </div>
+        <div class="row">
+          <label>⏱️ Ліміт на питання:&nbsp;
+            <select id="timeSel">
+              <option value="10">10 с</option>
+              <option value="20">20 с</option>
+              <option value="30" selected>30 с</option>
+              <option value="45">45 с</option>
+              <option value="60">60 с</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="row" style="gap:10px">
+        <button class="btn primary" onclick="startQuiz()">▶ Почати</button>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="muted">Поточний бекенд: <code>${getServerUrl() ? getServerUrl() : 'не задано'}</code></div>
+      </div>
+    </div>
+  `;
+}
+
+function leaderboardScreen(){
+  screen.innerHTML = `
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div class="row">
+          <input id="sessBoard" placeholder="Код сесії" value="${sessionCode}" />
+          <button class="btn" onclick="refreshBoard()">Оновити</button>
+        </div>
+        <div class="row">
+          <button class="btn" onclick="openSetup()">Налаштувати бекенд</button>
+          <button class="btn" onclick="startScreen()">← На головну</button>
+        </div>
+      </div>
+      <div id="board" style="margin-top:8px"></div>
+    </div>
+  `;
+  refreshBoard();
+}
+
+async function refreshBoard(){
+  const sess = document.getElementById('sessBoard').value || 'session1';
+  const res = await getLeaderboard(sess);
+  const board = document.getElementById('board');
+  if (!res.ok){
+    board.innerHTML = `<div class="muted">Немає підключення до бекенду або URL не задано.</div>`;
+    return;
+  }
+  const rows = res.rows || [];
+  let html = `<table>
+    <thead><tr><th>#</th><th>Ім'я</th><th>Бал</th><th>З питань</th><th>%</th><th>⏱</th><th>Час</th></tr></thead><tbody>`;
+  rows.forEach((r,i)=>{
+    html += `<tr>
+      <td>${i+1}</td>
+      <td>${r.name||''}</td>
+      <td>${r.score}</td>
+      <td>${r.total}</td>
+      <td>${Math.round(r.percent)}%</td>
+      <td>${r.timePerQuestion}s</td>
+      <td>${(r.timestamp||'').toString().replace('T',' ').replace('Z','')}</td>
+    </tr>`;
+  });
+  html += `</tbody></table>`;
+  board.innerHTML = html;
+
+  setTimeout(refreshBoard, 5000);
+}
+
+function startQuiz(){
+  playerName = (document.getElementById('name')?.value || '').trim() || 'anonymous';
+  sessionCode = (document.getElementById('sess')?.value || '').trim() || 'session1';
+  const sel = document.getElementById("timeSel");
+  if (sel) timePerQuestion = parseInt(sel.value, 10) || 30;
+
+  order = shuffle([...Array(DATA.length).keys()]);
+  idx = 0;
+  score = 0;
+  answersOrder = order.map(() => shuffle([0,1,2,3]));
+  renderQuestion();
+}
+
+function setupTimer(){
+  clearTimer();
+  remaining = timePerQuestion;
+  updateTimerUI();
+  timerId = setInterval(()=>{
+    remaining--;
+    if (remaining <= 0){ clearTimer(); timeUp(); }
+    else updateTimerUI();
+  }, 1000);
+}
+
+function clearTimer(){ if (timerId){ clearInterval(timerId); timerId = null; } }
+
+function updateTimerUI(){
+  const chip = document.getElementById("timeChip");
+  const bar = document.getElementById("timeBar");
+  if (chip) chip.textContent = `⏳ Залишилось: ${remaining} с`;
+  if (bar){ const pct = Math.max(0, Math.min(100, Math.round((remaining/timePerQuestion)*100))); bar.style.width = pct + "%"; }
+}
+
+function renderQuestion(){
+  const i = order[idx];
+  const item = DATA[i];
+  const map = answersOrder[idx];
+  const answers = map.map(m => item.a[m]);
+
+  const progressPct = Math.round((idx)/DATA.length*100);
+  screen.innerHTML = `
+    <div class="card">
+      <div class="row" style="justify-content:space-between;">
+        <div class="row">
+          <div class="chip">Завдання ${idx+1} / ${DATA.length}</div>
+          <div class="chip">Балів: ${score}</div>
+          <div class="chip" id="timeChip">⏳ Залишилось: -- с</div>
+        </div>
+        <div class="row">
+          <button class="btn" onclick="leaderboardScreen()">🏆 Рейтинг</button>
+          <button class="btn" onclick="startScreen()">↺ Скинути</button>
+        </div>
+      </div>
+      <div class="progress" style="margin:10px 0 8px;"><div style="width:${progressPct}%"></div></div>
+      <div class="timebar" style="margin:6px 0 16px;"><div id="timeBar"></div></div>
+      <div class="case">${item.case}</div>
+      <div class="question">${item.q}</div>
+      <div class="answers">
+        ${answers.map((t, k)=>`<button class="btn" id="ans_${k}" onclick="selectAnswer(${k})">${k+1}) ${t}</button>`).join("")}
+      </div>
+      <div id="feedback" style="display:none; gap:12px; margin-top:8px"></div>
+      <div class="row" style="justify-content:space-between; margin-top:8px">
+        <div class="muted">Обирайте відповідь до завершення часу</div>
+        <div class="row">
+          <button class="btn" onclick="prev()" title="Назад">← Назад</button>
+          <button class="btn primary" onclick="skip()">Пропустити</button>
+          <button class="btn" onclick="next()">Далі →</button>
+        </div>
+      </div>
+    </div>
+  `;
+  setupTimer();
+}
+
+function disableButtonsAndReveal(correctShownIndex, clickedIndex){
+  for(let b=0;b<4;b++){
+    const el = document.getElementById("ans_"+b);
+    if (!el) continue;
+    el.disabled = true;
+    if (b === correctShownIndex) el.classList.add("correct");
+    if (clickedIndex !== null && b === clickedIndex && clickedIndex !== correctShownIndex) el.classList.add("wrong");
+  }
+}
+
+function showFeedback(msg){
+  const fb = document.getElementById("feedback");
+  if (!fb) return;
+  fb.style.display = "block";
+  fb.innerHTML = `<div class="case" style="background:rgba(34,197,94,.08); border-color:rgba(34,197,94,.25); color:#d1fae5">${msg}</div>`;
+}
+
+function selectAnswer(k){
+  clearTimer();
+  const i = order[idx];
+  const item = DATA[i];
+  const map = answersOrder[idx];
+  const correctShownIndex = map.indexOf(item.correct);
+  const isCorrect = (k === correctShownIndex);
+  disableButtonsAndReveal(correctShownIndex, k);
+  if (isCorrect) score++;
+  showFeedback((isCorrect ? "✔ Правильно!" : "✘ Неправильно.") + " " + item.explain);
+}
+
+function timeUp(){
+  const i = order[idx];
+  const item = DATA[i];
+  const map = answersOrder[idx];
+  const correctShownIndex = map.indexOf(item.correct);
+  disableButtonsAndReveal(correctShownIndex, null);
+  showFeedback("⏰ Час вийшов. " + item.explain);
+}
+
+function skip(){ clearTimer(); timeUp(); }
+function prev(){ if (idx<=0) return; clearTimer(); idx--; renderQuestion(); }
+function next(){ clearTimer(); idx++; if (idx >= DATA.length) return finish(); renderQuestion(); }
+
+async function finish(){
+  const pct = Math.round((score/DATA.length)*100);
+  const payload = { session: sessionCode, name: playerName, score, total: DATA.length, percent: pct, timePerQuestion };
+  const res = await postResult(payload);
+
+  screen.innerHTML = `
+    <div class="card">
+      <h2 style="margin-top:0">Результат</h2>
+      <p class="muted">Ви набрали <strong>${score}</strong> з ${DATA.length} (${pct}%).</p>
+      <div class="row" style="justify-content:space-between; margin-top:10px">
+        <div class="row">
+          <button class="btn primary" onclick="startQuiz()">Пройти ще раз</button>
+          <button class="btn" onclick="startScreen()">На головну</button>
+        </div>
+        <div class="row">
+          <button class="btn" onclick="leaderboardScreen()">🏆 Показати рейтинг</button>
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        ${res?.ok ? "Результат збережено до Google Sheets." : "⚠️ Не вдалося надіслати результат (можливо, не налаштовано бекенд у Налаштуваннях)."}
+      </div>
+    </div>
+  `;
+}
+
+// ======= Модал налаштувань =======
+function openSetup(){ document.getElementById('setupModal').style.display='flex'; document.getElementById('srvUrl').value = getServerUrl(); }
+function closeSetup(){ document.getElementById('setupModal').style.display='none'; }
+function saveSetup(){ const v = document.getElementById('srvUrl').value.trim(); setServerUrl(v); closeSetup(); startScreen(); }
+
+// init
+startScreen();
+</script>
+</body>
+</html>
